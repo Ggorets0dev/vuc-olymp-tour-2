@@ -85,18 +85,6 @@ int main(int argc, char *argv[])
         importPositions(filePath);
     }
 
-    if (parser.isSet(displayEmployeesOption)) {
-        displayEmployees(parser.isSet(titleSortOption));
-    }
-
-    if (parser.isSet(displayPositionsOption)) {
-        displayPositions(parser.isSet(titleSortOption));
-    }
-
-    if (parser.isSet(displayStationsOption)) {
-        displayStations(parser.isSet(titleSortOption));
-    }
-
     if (parser.isSet(checkStationFullnessOption)) {
         QString filePath = parser.value(checkStationFullnessOption);
         if (checkStationsFullness(filePath)) {
@@ -116,6 +104,18 @@ int main(int argc, char *argv[])
                 qInfo() << "Не удалось изменить персонал обеих станций";
             }
         }
+    }
+
+    if (parser.isSet(displayEmployeesOption)) {
+        displayEmployees(parser.isSet(titleSortOption));
+    }
+
+    if (parser.isSet(displayPositionsOption)) {
+        displayPositions(parser.isSet(titleSortOption));
+    }
+
+    if (parser.isSet(displayStationsOption)) {
+        displayStations(parser.isSet(titleSortOption));
     }
 
     db.close();
