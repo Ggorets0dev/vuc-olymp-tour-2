@@ -31,7 +31,7 @@ extern void
 displayEmployees(bool isTitleSort);
 
 extern void
-displayPositions(bool isTitleSort);
+displayPositions(bool isTitleSort, int taxPercent = 0);
 
 extern void
 displayStations(bool isTitleSort);

@@ -5,7 +5,7 @@
 #include <QtSql/QSqlQuery>
 #include <QCommandLineParser>
 
-#include "database.h"
+#include "database.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -44,6 +44,9 @@ int main(int argc, char *argv[])
     QCommandLineOption titleSortOption(
         "title-sort", "Применить сортировку по названиям (при выводе)");
 
+    QCommandLineOption taxDeductionOption(
+        "tax-deduction", "Применить вычет налогов к зарплате (при выводе)", "percent");
+
     // Добавление опций в парсер
     parser.addOption(importEmployeesOption);
     parser.addOption(importStationsOption);
@@ -60,6 +63,7 @@ int main(int argc, char *argv[])
     parser.addOption(stationTwoOption);
 
     parser.addOption(titleSortOption);
+    parser.addOption(taxDeductionOption);
 
     // Разбор аргументов командной строки
     parser.process(app);
@@ -111,7 +115,7 @@ int main(int argc, char *argv[])
     }
 
     if (parser.isSet(displayPositionsOption)) {
-        displayPositions(parser.isSet(titleSortOption));
+        displayPositions(parser.isSet(titleSortOption), parser.isSet(taxDeductionOption) ? parser.value(taxDeductionOption).toInt() : 0);
     }
 
     if (parser.isSet(displayStationsOption)) {

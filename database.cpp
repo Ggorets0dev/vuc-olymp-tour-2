@@ -1,4 +1,4 @@
-#include "database.h"
+#include "database.hpp"
 
 #define DB_NAME             "VoenTour2"
 #define DB_USER_NAME        "user1"
@@ -70,9 +70,9 @@ static quint8
 getStationId(const QString& title) {
     QSqlQuery query;
 
-    query.prepare("SELECT id FROM stations WHERE title = :stt");
+    query.prepare("SELECT id FROM stations WHERE title = :stationTitle");
 
-    query.bindValue(":stt", title);
+    query.bindValue(":stationTitle", title);
 
     if (!query.exec()) {
         qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
@@ -164,7 +164,7 @@ displayStations(bool isTitleSort) {
 }
 
 void
-displayPositions(bool isTitleSort) {
+displayPositions(bool isTitleSort, int taxPercent) {
     QSqlQuery query;
 
     QString queryText = "SELECT id, title, add_date, salary FROM positions";
@@ -182,7 +182,7 @@ displayPositions(bool isTitleSort) {
         int id = query.value(0).toInt();
         QString title = query.value(1).toString();
         QString addDate = query.value(2).toString();
-        int salary = query.value(3).toInt();
+        int salary = query.value(3).toInt() / 100.0f * (100.0f - static_cast<float>(taxPercent));
 
         qInfo() << "ID: " << id;
         qInfo() << "Название: " << title;
