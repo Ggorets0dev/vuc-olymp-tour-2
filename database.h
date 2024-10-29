@@ -28,13 +28,13 @@ swapStations(const QString& title1, const QString& title2);
 // -------- DISPLAY CONTAINS OF DATABASE
 
 extern void
-displayEmployees();
+displayEmployees(bool isTitleSort);
 
 extern void
-displayPositions();
+displayPositions(bool isTitleSort);
 
 extern void
-displayStations();
+displayStations(bool isTitleSort);
 
 // --------
 

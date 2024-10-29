@@ -41,6 +41,9 @@ int main(int argc, char *argv[])
     QCommandLineOption stationTwoOption(
         "station-two", "Смена комплектования станций", "title");
 
+    QCommandLineOption titleSortOption(
+        "title-sort", "Применить сортировку по названиям (при выводе)");
+
     // Добавление опций в парсер
     parser.addOption(importEmployeesOption);
     parser.addOption(importStationsOption);
@@ -55,6 +58,8 @@ int main(int argc, char *argv[])
 
     parser.addOption(stationOneOption);
     parser.addOption(stationTwoOption);
+
+    parser.addOption(titleSortOption);
 
     // Разбор аргументов командной строки
     parser.process(app);
@@ -81,15 +86,15 @@ int main(int argc, char *argv[])
     }
 
     if (parser.isSet(displayEmployeesOption)) {
-        displayEmployees();
+        displayEmployees(parser.isSet(titleSortOption));
     }
 
     if (parser.isSet(displayPositionsOption)) {
-        displayPositions();
+        displayPositions(parser.isSet(titleSortOption));
     }
 
     if (parser.isSet(displayStationsOption)) {
-        displayStations();
+        displayStations(parser.isSet(titleSortOption));
     }
 
     if (parser.isSet(checkStationFullnessOption)) {

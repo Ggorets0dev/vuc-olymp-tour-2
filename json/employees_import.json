@@ -1,0 +1,15 @@
+[
+    {
+        "full_name": "Абрамов Даниил Степанович",
+        "start_date": "01.05.2008",
+        "station_id": 1,
+        "position_id": 1
+    },
+    {
+        "full_name": "Смирнов Даниил Олегович",
+        "start_date": "01.08.2005",
+        "station_id": 2,
+        "position_id": 2
+    }
+]
+

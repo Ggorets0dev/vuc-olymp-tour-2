@@ -4,6 +4,8 @@
 #define DB_USER_NAME        "user1"
 #define DB_USER_PASSWORD    "user1"
 
+#define DB_ERROR_MESSAGE    "Ошибка при работе с БД"
+
 static QJsonDocument
 readJsonFromFile(const QString& filePath) {
     QFile file(filePath);
@@ -37,7 +39,7 @@ getPositionTitle(quint8 pos_id) {
     query.bindValue(":posid", pos_id);
 
     if (!query.exec()) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         return "";
     }
 
@@ -55,7 +57,7 @@ getStationTitle(quint8 st_id) {
     query.bindValue(":stid", st_id);
 
     if (!query.exec()) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         return "";
     }
 
@@ -73,7 +75,7 @@ getStationId(const QString& title) {
     query.bindValue(":stt", title);
 
     if (!query.exec()) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         return -1;
     }
 
@@ -92,21 +94,27 @@ connectToDatabase(QSqlDatabase* db) {
 
     // Открываем соединение
     if (!db->open()) {
-        qDebug() << "Ошибка подключения к базе данных: " << db->lastError().text();
+        qInfo() << DB_ERROR_MESSAGE << ":" << db->lastError().text();
         return false;
     }
 
-    qDebug() << "Подключение успешно!";
+    qInfo() << "Подключение успешно!";
 
     return true;
 }
 
 void
-displayEmployees() {
+displayEmployees(bool isTitleSort) {
     QSqlQuery query;
 
-    if (!query.exec("SELECT id, full_name, start_date, station_id, position_id FROM employees")) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+    QString queryText = "SELECT id, full_name, start_date, station_id, position_id FROM employees";
+
+    if (isTitleSort) {
+        queryText += " ORDER BY full_name ASC";
+    }
+
+    if (!query.exec(queryText)) {
+        qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         return;
     }
 
@@ -126,11 +134,17 @@ displayEmployees() {
 }
 
 void
-displayStations() {
+displayStations(bool isTitleSort) {
     QSqlQuery query;
 
-    if (!query.exec("SELECT id, title, city, address FROM stations")) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+    QString queryText = "SELECT id, title, city, address FROM stations";
+
+    if (isTitleSort) {
+        queryText += " ORDER BY title ASC";
+    }
+
+    if (!query.exec(queryText)) {
+        qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         return;
     }
 
@@ -150,11 +164,17 @@ displayStations() {
 }
 
 void
-displayPositions() {
+displayPositions(bool isTitleSort) {
     QSqlQuery query;
 
-    if (!query.exec("SELECT id, title, add_date, salary FROM positions")) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+    QString queryText = "SELECT id, title, add_date, salary FROM positions";
+
+    if (isTitleSort) {
+        queryText += " ORDER BY title ASC";
+    }
+
+    if (!query.exec(queryText)) {
+        qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         return;
     }
 
@@ -274,7 +294,7 @@ importEmployees(const QString& filePath) {
 
         // Выполнение запроса
         if (!query.exec()) {
-            qWarning() << "Ошибка вставки данных: " << query.lastError().text();
+            qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         }
     }
 
@@ -310,7 +330,7 @@ checkStationsFullness(const QString& filePath) {
 
         // Выполнение запроса
         if (!query.exec()) {
-            qWarning() << "Ошибка данных: " << query.lastError().text();
+            qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
         }
 
         while (query.next()) {
