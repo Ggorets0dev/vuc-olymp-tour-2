@@ -119,6 +119,7 @@ int main(int argc, char *argv[])
     }
 
     db.close();
+    qInfo() << "Отключение успешно!";
 
     return 0;
 }
