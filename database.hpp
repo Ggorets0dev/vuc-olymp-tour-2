@@ -12,6 +12,7 @@
 #include <QJsonArray>
 
 using StationPersonnelCount = QHash<QString, qint8>;
+using StationSwapCandidates = QPair<quint8, quint8>;
 
 extern bool
 connectToDatabase(QSqlDatabase* db);
@@ -24,6 +25,9 @@ swapStations(const qint8 Id1, const qint8 Id2);
 
 extern bool
 swapStations(const QString& title1, const QString& title2);
+
+extern bool
+checkStationCandidates(const StationSwapCandidates& conds);
 
 // -------- DISPLAY CONTAINS OF DATABASE
 

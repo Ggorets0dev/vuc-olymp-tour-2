@@ -85,6 +85,26 @@ getStationId(const QString& title) {
 }
 
 bool
+checkStationCandidates(const StationSwapCandidates& conds) {
+    QSqlQuery query;
+
+    query.prepare("SELECT COUNT(*) FROM stations WHERE id = :Id1 OR id = :Id2");
+    query.bindValue(":Id1", conds.first);
+    query.bindValue(":Id2", conds.second);
+
+    if (!query.exec()) {
+        qInfo() << DB_ERROR_MESSAGE << ":" << query.lastError().text();
+        return false;
+    }
+
+    if (query.next()) {
+        return query.value(0).toUInt() == 2;
+    } else {
+        return false;
+    }
+}
+
+bool
 connectToDatabase(QSqlDatabase* db) {
     // Настраиваем параметры подключения
     db->setHostName("localhost");           // Хост, где находится база данных

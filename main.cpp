@@ -99,14 +99,23 @@ int main(int argc, char *argv[])
     }
 
     if (parser.isSet(swapStationsOption)) {
-        if (!parser.isSet(stationOneOption) || parser.isSet(stationTwoOption)) {
-            qInfo() << "Переданы не все аргументы, требующиеся для выполения операции";
-        } else {
-            if (swapStations(parser.value(stationOneOption), parser.value(stationTwoOption))) {
-                qInfo() << "Персонал обеих станций успешно изменен";
+        if (parser.isSet(stationOneOption) && parser.isSet(stationTwoOption)) {
+            quint8 id1 = parser.value(stationOneOption).toUInt();
+            quint8 id2 = parser.value(stationTwoOption).toUInt();
+
+            if (checkStationCandidates(StationSwapCandidates(id1, id2))) {
+                qInfo() << "Станции с указанными названиями обнаружены в БД";
+
+                if (swapStations(parser.value(stationOneOption), parser.value(stationTwoOption))) {
+                    qInfo() << "Персонал обеих станций успешно изменен";
+                } else {
+                    qInfo() << "Не удалось изменить персонал обеих станций";
+                }
             } else {
-                qInfo() << "Не удалось изменить персонал обеих станций";
+                qInfo() << "Станции с указанными названиями не обнаружены в БД";
             }
+        } else {
+            qInfo() << "Переданы не все аргументы, требующиеся для выполения операции";
         }
     }
 
