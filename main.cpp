@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QCommandLineParser parser;
 
     // Установка информации о приложении
-    parser.setApplicationDescription("Приложение для импорта данных");
+    parser.setApplicationDescription("МчсОперШтаб: Приложение для учета сотрудников МЧС");
     parser.addHelpOption();  // Добавляет стандартный --help, который автоматически вызывает справку
 
     // Опции для импорта данных
@@ -104,15 +104,15 @@ int main(int argc, char *argv[])
             quint8 id2 = parser.value(stationTwoOption).toUInt();
 
             if (checkStationCandidates(StationSwapCandidates(id1, id2))) {
-                qInfo() << "Станции с указанными названиями обнаружены в БД";
+                qInfo() << "Станции с указанными ID обнаружены в БД";
 
-                if (swapStations(parser.value(stationOneOption), parser.value(stationTwoOption))) {
+                if (swapStations(id1, id2)) {
                     qInfo() << "Персонал обеих станций успешно изменен";
                 } else {
                     qInfo() << "Не удалось изменить персонал обеих станций";
                 }
             } else {
-                qInfo() << "Станции с указанными названиями не обнаружены в БД";
+                qInfo() << "Станции с указанными ID не обнаружены в БД";
             }
         } else {
             qInfo() << "Переданы не все аргументы, требующиеся для выполения операции";

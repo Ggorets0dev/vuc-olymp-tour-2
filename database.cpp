@@ -130,7 +130,7 @@ displayEmployees(bool isTitleSort) {
     QString queryText = "SELECT id, full_name, start_date, station_id, position_id FROM employees";
 
     if (isTitleSort) {
-        queryText += " ORDER BY full_name ASC";
+        queryText += " ORDER BY full_name DESC";
     }
 
     if (!query.exec(queryText)) {
@@ -160,7 +160,7 @@ displayStations(bool isTitleSort) {
     QString queryText = "SELECT id, title, city, address FROM stations";
 
     if (isTitleSort) {
-        queryText += " ORDER BY title ASC";
+        queryText += " ORDER BY title DESC";
     }
 
     if (!query.exec(queryText)) {
@@ -190,7 +190,7 @@ displayPositions(bool isTitleSort, int taxPercent) {
     QString queryText = "SELECT id, title, add_date, salary FROM positions";
 
     if (isTitleSort) {
-        queryText += " ORDER BY title ASC";
+        queryText += " ORDER BY title DESC";
     }
 
     if (!query.exec(queryText)) {
@@ -362,11 +362,6 @@ checkStationsFullness(const QString& filePath) {
     }
 
     return true;
-}
-
-extern bool
-swapStations(const QString& title1, const QString& title2) {
-    return swapStations(getStationId(title1), getStationId(title2));
 }
 
 extern bool
